@@ -8,27 +8,24 @@ CYAN="\e[36m"
 RESET="\e[0m"
 
 print_border() {
-    local width=${1:-54}
-    local char=${2:-=}
-    printf '+'
-    printf '%s' "$(printf '%*s' "$width" '' | tr ' ' "$char")"
-    printf '+\n'
+    echo "+======================================================+"
 }
 
 print_footer() {
-    local width=${1:-54}
-    local char=${2:-=}
-    printf '+'
-    printf '%s' "$(printf '%*s' "$width" '' | tr ' ' "$char")"
-    printf '+\n'
+    echo "+======================================================+"
+}
+
+print_divider() {
+    echo "|------------------------------------------------------|"
 }
 
 show_banner() {
     clear
-    print_border 54
+    print_border
     printf '| %-52s |\n' "CUET CAFETERIA MANAGEMENT SYSTEM"
+    print_divider
     printf '| %-52s |\n' "Fresh orders, clean inventory, instant reports"
-    print_footer 54
+    print_footer
     echo -e "${CYAN}🍽️  Serving smart cafeteria operations with style${RESET}"
     echo
 }
@@ -37,10 +34,11 @@ show_panel_title() {
     local title="$1"
     local subtitle="$2"
     clear
-    print_border 54
+    print_border
     printf '| %-52s |\n' "$title"
     [ -n "$subtitle" ] && printf '| %-52s |\n' "$subtitle"
-    print_footer 54
+    print_divider
+    print_footer
 }
 
 show_message() {
