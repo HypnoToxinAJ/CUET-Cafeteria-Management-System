@@ -1,3 +1,0 @@
-Burger     3          120        360       
-Coffee     20         30         600       
-Singara    3          10         30        
