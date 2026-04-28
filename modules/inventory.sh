@@ -18,12 +18,12 @@ echo
 
 while true
 do
-echo "┌──────────────────── Current Items ────────────────────┐"
+echo "[ Current Items ]"
 while IFS="|" read -r id name price stock
 do
 printf "  %s - %s\n" "$id" "$name"
 done < <(tr -d '\r' < data/inventory.txt)
-echo "└───────────────────────────────────────────────────────┘"
+echo "----------------------------------------------"
 echo
 
 read -p "🆔 Item ID: " id

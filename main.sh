@@ -9,25 +9,25 @@ RESET="\e[0m"
 
 print_border() {
     local width=${1:-54}
-    local char=${2:-═}
-    printf '╔'
+    local char=${2:-=}
+    printf '+'
     printf '%s' "$(printf '%*s' "$width" '' | tr ' ' "$char")"
-    printf '╗\n'
+    printf '+\n'
 }
 
 print_footer() {
     local width=${1:-54}
-    local char=${2:-═}
-    printf '╚'
+    local char=${2:-=}
+    printf '+'
     printf '%s' "$(printf '%*s' "$width" '' | tr ' ' "$char")"
-    printf '╝\n'
+    printf '+\n'
 }
 
 show_banner() {
     clear
     print_border 54
-    printf '║ %-52s ║\n' "CUET CAFETERIA MANAGEMENT SYSTEM"
-    printf '║ %-52s ║\n' "Fresh orders, clean inventory, instant reports"
+    printf '| %-52s |\n' "CUET CAFETERIA MANAGEMENT SYSTEM"
+    printf '| %-52s |\n' "Fresh orders, clean inventory, instant reports"
     print_footer 54
     echo -e "${CYAN}🍽️  Serving smart cafeteria operations with style${RESET}"
     echo
@@ -38,8 +38,8 @@ show_panel_title() {
     local subtitle="$2"
     clear
     print_border 54
-    printf '║ %-52s ║\n' "$title"
-    [ -n "$subtitle" ] && printf '║ %-52s ║\n' "$subtitle"
+    printf '| %-52s |\n' "$title"
+    [ -n "$subtitle" ] && printf '| %-52s |\n' "$subtitle"
     print_footer 54
 }
 
