@@ -1,15 +1,11 @@
 billing_menu() {
 
-clear
+show_panel_title "🧾 Billing Counter" "Pick items, confirm quantities, and generate an invoice"
 
 bill_id=$(date +%s)
 bill_file="data/bills/bill_$bill_id.txt"
 
 total_bill=0
-
-echo "=============================================="
-echo "          CUET CAFETERIA ORDER PANEL          "
-echo "=============================================="
 
 printf "%-8s %-18s %-10s %-10s\n" "ID" "Item" "Price" "Stock"
 echo "----------------------------------------------"
@@ -26,20 +22,20 @@ echo
 while true
 do
 
-read -p "Item ID: " id
+read -p "🆔 Item ID: " id
 id=${id//$'\r'/}
 
 if [ "$id" == "0" ]; then
 break
 fi
 
-read -p "Quantity: " qty
+read -p "📦 Quantity: " qty
 qty=${qty//$'\r'/}
 
 item=$(grep "^$id|" data/inventory.txt)
 
 if [ -z "$item" ]; then
-echo "Invalid Item ID"
+show_message "\e[31m" "❌" "Invalid item ID"
 continue
 fi
 
@@ -49,14 +45,14 @@ price=$(echo "$item" | cut -d"|" -f3)
 stock=$(echo "$item" | cut -d"|" -f4)
 
 if [ "$qty" -gt "$stock" ]; then
-echo "Not enough stock!"
+show_message "\e[33m" "⚠️" "Not enough stock for $name"
 continue
 fi
 
 item_total=$((price * qty))
 total_bill=$((total_bill + item_total))
 
-printf "%-10s %-10s %-10s %-10s\n" "$name" "$qty" "$price" "$item_total" >> $bill_file
+printf "%-10s %-10s %-10s %-10s\n" "$name" "$qty" "$price" "$item_total" >> "$bill_file"
 
 new_stock=$((stock - qty))
 
@@ -64,9 +60,11 @@ awk -F"|" -v id="$id" -v ns="$new_stock" 'BEGIN{OFS="|"} $1==id{$4=ns} {print}' 
 
 echo "$bill_id|$id|$qty|$item_total" >> data/sales/sales_$(date +%F).txt
 
+show_message "\e[32m" "✅" "$name added to the bill"
+
 done
 
-generate_invoice $bill_file $total_bill $bill_id
+generate_invoice "$bill_file" "$total_bill" "$bill_id"
 
 echo "$(date +"%T") - Bill Generated: $bill_id - $total_bill" >> data/logs/log_$(date +%F).txt
 
@@ -86,23 +84,23 @@ clear
 
 # Build invoice content
 {
-echo "======================================"
-echo "        CUET Cafeteria Invoice        "
-echo "======================================"
+echo "╔══════════════════════════════════════╗"
+echo "║        CUET Cafeteria Invoice        ║"
+echo "╚══════════════════════════════════════╝"
 echo "Bill ID : $bill_id"
 echo "Date    : $(date)"
 echo "--------------------------------------"
 printf "%-10s %-10s %-10s %-10s\n" "Item" "Qty" "Price" "Total"
 echo "--------------------------------------"
-cat $bill_file
+cat "$bill_file"
 echo "--------------------------------------"
 echo "TOTAL AMOUNT: $total Taka"
 echo "--------------------------------------"
-echo "Thank you for visiting CUET Cafeteria"
-echo "======================================"
+echo "Thank you for visiting CUET Cafeteria 🍽️"
+echo "╚══════════════════════════════════════╝"
 } | tee "$invoice_file"
 
 echo
-echo "Invoice saved at: $invoice_file"
+show_message "\e[32m" "✅" "Invoice saved at: $invoice_file"
 
 }

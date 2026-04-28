@@ -1,6 +1,6 @@
 admin_dashboard(){
 
-clear
+show_panel_title "🧭 Admin Dashboard" "Daily overview of orders, sales, and profit"
 
 sales_file="data/sales/sales_$(date +%F).txt"
 
@@ -17,13 +17,9 @@ BEGIN{
 END{print sum+0}
 ' "$sales_file")
 
-echo "================================"
-echo "         ADMIN DASHBOARD        "
-echo "================================"
-
-echo "Total Orders : $orders"
-echo "Total Sales  : $sales Taka"
-echo "Daily Profit : $profit Taka"
+echo "📦 Total Orders : $orders"
+echo "💰 Total Sales  : $sales Taka"
+echo "📈 Daily Profit : $profit Taka"
 
 echo
 read
@@ -33,19 +29,15 @@ read
 
 daily_profit_report() {
 
-clear
+show_panel_title "📊 Daily Profit Report" "See item-level profit for today"
 
 sales_file="data/sales/sales_$(date +%F).txt"
 
 if [ ! -f "$sales_file" ]; then
-echo "No sales today."
+show_message "\e[33m" "ℹ️" "No sales today."
 read
 return
 fi
-
-echo "=============================================="
-echo "        CUET CAFETERIA DAILY PROFIT REPORT    "
-echo "=============================================="
 
 printf "%-15s %-10s %-12s %-10s\n" "Item" "Sold" "Profit/Item" "Profit"
 echo "------------------------------------------------"
@@ -98,14 +90,10 @@ reports_menu(){
 
 while true
 do
-clear
+show_panel_title "📑 Reports Menu" "Choose a report to inspect performance"
 
-echo "================================"
-echo "          REPORT MENU           "
-echo "================================"
-
-echo "1. Daily Profit Report"
-echo "2. Back"
+echo "1. 📊 Daily Profit Report"
+echo "2. ↩️ Back"
 
 read -p "Choice: " ch
 

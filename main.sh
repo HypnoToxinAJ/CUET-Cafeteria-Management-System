@@ -7,6 +7,49 @@ BLUE="\e[34m"
 CYAN="\e[36m"
 RESET="\e[0m"
 
+print_border() {
+    local width=${1:-54}
+    local char=${2:-═}
+    printf '╔'
+    printf '%s' "$(printf '%*s' "$width" '' | tr ' ' "$char")"
+    printf '╗\n'
+}
+
+print_footer() {
+    local width=${1:-54}
+    local char=${2:-═}
+    printf '╚'
+    printf '%s' "$(printf '%*s' "$width" '' | tr ' ' "$char")"
+    printf '╝\n'
+}
+
+show_banner() {
+    clear
+    print_border 54
+    printf '║ %-52s ║\n' "CUET CAFETERIA MANAGEMENT SYSTEM"
+    printf '║ %-52s ║\n' "Fresh orders, clean inventory, instant reports"
+    print_footer 54
+    echo -e "${CYAN}🍽️  Serving smart cafeteria operations with style${RESET}"
+    echo
+}
+
+show_panel_title() {
+    local title="$1"
+    local subtitle="$2"
+    clear
+    print_border 54
+    printf '║ %-52s ║\n' "$title"
+    [ -n "$subtitle" ] && printf '║ %-52s ║\n' "$subtitle"
+    print_footer 54
+}
+
+show_message() {
+    local color="$1"
+    local icon="$2"
+    local text="$3"
+    echo -e "${color}${icon} ${text}${RESET}"
+}
+
 mkdir -p data/sales data/logs data/backup data/bills modules
 
 touch data/users.txt
@@ -47,18 +90,14 @@ main_menu() {
 while true
 do
 
-clear
+show_banner
 
-echo "================================"
-echo "     CUET CAFETERIA SYSTEM      "
-echo "================================"
-
-echo "1. Billing (Staff)"
-echo "2. Inventory Management (Admin)"
-echo "3. Reports (Admin)"
-echo "4. Admin Dashboard"
-echo "5. Backup"
-echo "6. Exit"
+echo "1. 🍔 Billing (Staff)"
+echo "2. 📦 Inventory Management (Admin)"
+echo "3. 📊 Reports (Admin)"
+echo "4. 🧭 Admin Dashboard"
+echo "5. 💾 Backup"
+echo "6. 🚪 Exit"
 
 read -p "Choice: " ch
 
